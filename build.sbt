@@ -11,9 +11,11 @@ seq(webSettings :_*)
 classpathTypes ~= (_ + "orbit")
 
 libraryDependencies ++= Seq(
-  "net.liftweb" % "lift-json_2.9.2" % "2.5-M2",
-  "net.liftweb" % "lift-mongodb-record_2.9.2" % "2.5-M2",
-  "com.foursquare" % "rogue" % "1.1.8" intransitive(),
+  "org.scalatra" % "scalatra-json" % "2.2.0-RC1",
+  "org.json4s" % "json4s-jackson_2.9.1-1" % "3.0.0",
+  "com.wordnik" % "swagger-core_2.9.1" % "1.1.0",
+  "com.novus" %% "salat" % "1.9.1",
+  "org.scalatra" % "scalatra-swagger" % "2.2.0-RC1",
   "org.scalatra" % "scalatra" % "2.1.1",
   "org.scalatra" % "scalatra-scalate" % "2.1.1",
   "org.scalatra" % "scalatra-specs2" % "2.1.1" % "test",
