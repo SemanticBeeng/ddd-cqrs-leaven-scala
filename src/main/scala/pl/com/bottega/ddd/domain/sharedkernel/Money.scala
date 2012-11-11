@@ -2,9 +2,19 @@ package pl.com.bottega.ddd.domain.sharedkernel
 
 import java.util.Currency
 import java.lang.String
+import pl.com.bottega.ddd.domain.sharedkernel.Money
+import java.math.RoundingMode
 
+object Money{
+  def apply(valueParam: BigDecimal, currencyCodeParam: String = Currency.getInstance("EUR").getCurrencyCode) = {
+    new Money(valueParam, currencyCodeParam)
+  }
+}
+class Money(valueParam: BigDecimal, currencyCodeParam: String) {
 
-case class Money(value: BigDecimal, currencyCode: String = Currency.getInstance("EUR").getCurrencyCode) {
+  val currencyCode = currencyCodeParam
+  val value = valueParam.setScale(2, BigDecimal.RoundingMode.HALF_EVEN)
+
 
   def this(value: BigDecimal, currency: Currency) = {
     this(value, currency.getCurrencyCode)
@@ -36,7 +46,7 @@ case class Money(value: BigDecimal, currencyCode: String = Currency.getInstance(
   }
 
   def -(money: Money): Money = {
-    this.+(Money(-money.value, money.currencyCode))
+    this.+(new Money(-money.value, money.currencyCode))
   }
 
   def +(money: Money): Money = {
@@ -47,11 +57,11 @@ case class Money(value: BigDecimal, currencyCode: String = Currency.getInstance(
   }
 
 
-  def *(multiplier: BigDecimal) = Money(value * multiplier, currencyCode)
+  def *(multiplier: BigDecimal) = new Money(value * multiplier, currencyCode)
 
   def getCurrency : Currency = Currency.getInstance(currencyCode)
 
   override def toString = {
-    String.format("%0$.2f %s", value, getCurrency.getSymbol)
+    "%0$.2f %s".format(value, getCurrency.getSymbol)
   }
 }
