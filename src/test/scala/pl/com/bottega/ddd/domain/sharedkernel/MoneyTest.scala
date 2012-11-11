@@ -57,6 +57,4 @@ class MoneyTest extends Specification {
       new Money(5.75, "USD").toString === "5.75 $"
     }
   }
-
-
 }

@@ -5,28 +5,29 @@ import java.lang.String
 import pl.com.bottega.ddd.domain.sharedkernel.Money
 import java.math.RoundingMode
 
-object Money{
-  def apply(valueParam: BigDecimal, currencyCodeParam: String = Currency.getInstance("EUR").getCurrencyCode) = {
-    new Money(valueParam, currencyCodeParam)
+
+
+object Money {
+
+  val DEFAULT_CURRENCY_CODE: String = "EUR"
+
+  def apply(value: Double, currency: Currency): Money = {
+    Money(value, currency.getCurrencyCode)
+  }
+
+  def apply(value: BigDecimal, currency: Currency): Money = {
+    Money(value.doubleValue(), currency.getCurrencyCode)
   }
 }
-class Money(valueParam: BigDecimal, currencyCodeParam: String) {
+case class Money(doubleValue: Double, currencyCode: String = Currency.getInstance(Money.DEFAULT_CURRENCY_CODE).getCurrencyCode) {
 
-  val currencyCode = currencyCodeParam
-  val value = valueParam.setScale(2, BigDecimal.RoundingMode.HALF_EVEN)
+  val value = round(BigDecimal(doubleValue))
 
-
-  def this(value: BigDecimal, currency: Currency) = {
-    this(value, currency.getCurrencyCode)
+  def isZero(decimal: BigDecimal): Boolean = {
+    decimal == 0
   }
 
-  def isZero(decimal: BigDecimal): Boolean =
-  {
-     decimal == 0
-  }
-
-  private def compatibleCurrency(money: Money): Boolean =
-  {
+  private def compatibleCurrency(money: Money): Boolean = {
     isZero(value) || isZero(money.value) || (currencyCode == money.currencyCode)
   }
 
@@ -34,34 +35,38 @@ class Money(valueParam: BigDecimal, currencyCodeParam: String) {
 
     if (obj.isInstanceOf[Money]) {
       val money: Money = obj.asInstanceOf[Money]
-      compatibleCurrency(money) && (value == money.value)
+      compatibleCurrency(money) && (round(value) == round(money.value))
     }
-      else
-    false
+    else
+      false
   }
 
-  def determineCurrencyCode(money: Money): Currency ={
-    val resultingCurrenctCode: String = if (isZero(value)) money.currencyCode else currencyCode
-    Currency.getInstance(resultingCurrenctCode)
+  def determineCurrencyCode(money: Money): Currency = {
+    val resultingCurrencyCode: String = if (isZero(value)) money.currencyCode else currencyCode
+    Currency.getInstance(resultingCurrencyCode)
   }
 
   def -(money: Money): Money = {
-    this.+(new Money(-money.value, money.currencyCode))
+    this.+(Money(-money.doubleValue, money.currencyCode))
   }
 
   def +(money: Money): Money = {
     if (!compatibleCurrency(money)) {
       throw new IllegalArgumentException("Currency mismatch")
     }
-    new Money(value + money.value, determineCurrencyCode(money))
+    Money((value + money.value).doubleValue(), determineCurrencyCode(money))
   }
 
 
-  def *(multiplier: BigDecimal) = new Money(value * multiplier, currencyCode)
+  private def round(decimal: BigDecimal): BigDecimal = decimal.setScale(2, BigDecimal.RoundingMode.HALF_EVEN)
 
-  def getCurrency : Currency = Currency.getInstance(currencyCode)
+  def *(multiplier: BigDecimal) = Money((value * multiplier).doubleValue(), currencyCode)
+  def getCurrency: Currency = Currency.getInstance(currencyCode)
 
   override def toString = {
-    "%0$.2f %s".format(value, getCurrency.getSymbol)
+    "%0$.2f %s".format(round(value), getCurrency.getSymbol)
   }
+
+
 }
+
