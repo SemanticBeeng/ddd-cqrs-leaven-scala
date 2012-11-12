@@ -1,18 +1,14 @@
 package pl.com.bottega.ddd.infrastructure.repo.mongo
 
 import com.mongodb.casbah.MongoConnection
-import pl.com.bottega.erp.sales.presentation.mongo.MongoConsts
-import com.novus.salat._
 import pl.com.bottega.ddd.infrastructure.repo.GenericRepository
 import com.novus.salat._
-import com.novus.salat.global._
 import com.mongodb.casbah.Imports._
-import pl.com.bottega.erp.sales.presentation.ProductListItemDto
 import pl.com.bottega.ddd.DomainEntity
+import pl.com.bottega.erp.sales.presentation.mongo.MongoConsts
 
-class GenericMongoRepository[E <: DomainEntity, K](mongoBase: String)(implicit mot: Manifest[E],
-                                                       mid: Manifest[K], ctx: Context)
-  extends GenericRepository[E, K] {
+class GenericMongoRepository[E <: DomainEntity, K](mongoBase: String = MongoConsts.DB)(implicit mot: Manifest[E], mid: Manifest[K], ctx: Context)
+ extends GenericRepository[E, K] {
 
   val graterInstance = grater[E](ctx, mot)
 
