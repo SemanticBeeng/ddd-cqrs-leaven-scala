@@ -10,7 +10,7 @@ import com.mongodb.casbah.Imports._
 class MongoProductFinder extends ProductFinder {
 
   override def findProducts() = {
-    val mongoCollection = MongoConnection()(MongoConsts.DB_READMODEL)(MongoConsts.READMODEL_PRODUCTLIST)
+    val mongoCollection = MongoConnection()(MongoConsts.DB_READMODEL)(classOf[ProductListItemDto].getSimpleName)
     val result = mongoCollection.find()
     result.map(dbo => grater[ProductListItemDto].asObject(dbo)).toList
   }

@@ -1,7 +1,8 @@
 package pl.com.bottega.erp.sales.domain
 
-sealed  abstract class ProductType
-case object Drug extends ProductType
-case object Food extends ProductType
-case object Standard extends ProductType
+
+object ProductType extends Enumeration("Standard", "Food", "Drug") {
+
+  val Standard, Food, Drug = Value
+}
 
