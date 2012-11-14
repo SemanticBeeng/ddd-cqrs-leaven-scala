@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" ng-app>
+<head>
+    <meta charset="utf-8">
+    <title>DDD CQRS Sample</title>
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
+    <script src="lib/angular/angular.js"></script>
+    <script src="js/sales/ProductListController.js"></script>
+</head>
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="#">ERP</a>
+
+            <div class="nav-collapse collapse">
+                <p class="navbar-text pull-right">
+                    Logged in as <a href="#" class="navbar-link">Username</a>
+                </p>
+                <ul class="nav">
+                    <li class="active"><a href="#">Products</a></li>
+                    <li><a href="#about">Orders</a></li>
+                    <li><a href="#contact">Shipping</a></li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="hero-unit">
+        <h1>DDD CQRS Sample</h1>
+    </div>
+    <div class="row">
+        <div class="span9" ng-controller="ProductListController">
+            <h2>Available products</h2>
+
+            <p>Choose from our wide range of quality products</p>
+
+            <p>FILTER-FORM</p>
+             <table class="table table-striped">
+                <caption>{{products.length}} products found</caption>
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Name {{yourName}}</th>
+                    <th>Price</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tr ng-repeat="product in products">
+                    <td><img src="./img/sales/noProductPicture.png" alt="X"/></td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.price.doubleValue}}</td>
+                    <td>Add</td>
+                </tr>
+            </table>
+
+            <P>paginator</P>
+
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+
+
+        </div>
+
+        <div class="span3"><h3>Your basket</h3>
+            <li>Basket is empty</li>
+
+
+        </div>
+
+    </div>
+    <hr>
+    <footer>
+        <p>&copy; KC 2012</p>
+    </footer>
+</div>
+</body>
+</html>
