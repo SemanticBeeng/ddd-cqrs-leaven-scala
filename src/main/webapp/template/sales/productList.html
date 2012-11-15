@@ -3,7 +3,7 @@
     <p>Choose from our wide range of quality products</p>
     <p>FILTER-FORM</p>
     <table class="table table-striped">
-        <caption>{{products.length}} products found</caption>
+        <caption>{{products.totalItemsCount}} products found</caption>
         <thead>
         <tr>
             <th></th>
@@ -12,7 +12,7 @@
             <th></th>
         </tr>
         </thead>
-        <tr ng-repeat="product in products">
+        <tr ng-repeat="product in products.items">
             <td><img src="./img/sales/noProductPicture.png" alt="X"/></td>
             <td>{{product.name}}</td>
             <td>{{product.price.doubleValue}}</td>

@@ -5,6 +5,7 @@ import com.mongodb.casbah.MongoConnection
 import com.novus.salat._
 import com.novus.salat.global._
 import com.mongodb.casbah.Imports._
+import pl.com.bottega.cqrs.query.PaginatedResult
 
 class MongoProductFinder extends ProductFinder {
 
@@ -36,8 +37,10 @@ class MongoProductFinder extends ProductFinder {
     val queryWithPrice = criteria.maxPrice.map(queryWithName ++ preparePriceCriteria(_)) getOrElse queryWithName
     val pageNumber = if (criteria.pageNumber > 0) criteria.pageNumber else 1
     val pageSize = if (criteria.itemsPerPage > 0) criteria.itemsPerPage else 10
-    val result = mongoCollection.find(queryWithPrice).sort(prepareSorting(criteria.orderBy, criteria.ascending)).
-      skip((pageNumber - 1) * pageSize).limit(pageSize)
-    result.map(dbo => grater[ProductListItemDto].asObject(dbo)).toList
+    val finalQuery = mongoCollection.find(queryWithPrice).sort(prepareSorting(criteria.orderBy, criteria.ascending))
+    val allResultCount = finalQuery.count
+    val result = finalQuery.skip((pageNumber - 1) * pageSize).limit(pageSize)
+    val resultList = result.map(dbo => grater[ProductListItemDto].asObject(dbo)).toList
+    PaginatedResult(resultList, pageNumber, pageSize, allResultCount)
   }
 }
