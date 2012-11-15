@@ -1,6 +1,4 @@
-function ProductListController($scope, $http) {
+function ProductListController($scope, Products) {
 
-    $http.get('products/').success(function(data) {
-        $scope.products = data
-    });
-}
+        $scope.products = Products.query();
+    }

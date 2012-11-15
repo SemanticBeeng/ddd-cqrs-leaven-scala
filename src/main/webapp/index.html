@@ -1,14 +1,62 @@
 <!doctype html>
-<html ng-app>
+<html lang="en" ng-app="leaven">
 <head>
+    <meta charset="utf-8">
+    <title>DDD CQRS Sample</title>
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
     <script src="lib/angular/angular.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/sales/ProductListController.js"></script>
+    <script src="js/sales/ProductListServices.js"></script>
+    <script src="lib/angular/angular-resource.js"></script>
 </head>
 <body>
-<div>
-    <label>Name:</label>
-    <input type="text" ng-model="yourName" placeholder="Enter a name here">
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="#">ERP</a>
+
+            <div class="nav-collapse collapse">
+                <p class="navbar-text pull-right">
+                    Logged in as <a href="#" class="navbar-link">Username</a>
+                </p>
+                <ul class="nav">
+                    <li class="active"><a href="#">Products</a></li>
+                    <li><a href="#about">Orders</a></li>
+                    <li><a href="#contact">Shipping</a></li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="hero-unit">
+        <h1>DDD CQRS Sample</h1>
+    </div>
+    <div class="row">
+        <div class="span9">
+            <div ng-view></div>
+        </div>
+        <div class="span3"><h3>Your basket</h3>
+            <li>Basket is empty</li>
+
+
+        </div>
+
+    </div>
     <hr>
-    <h1>Hello {{yourName}}!</h1>
+    <footer>
+        <p>&copy; KC 2012</p>
+    </footer>
 </div>
 </body>
 </html>
