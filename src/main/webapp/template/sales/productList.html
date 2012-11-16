@@ -1,8 +1,32 @@
 <div>
     <h2>Available products</h2>
     <p>Choose from our wide range of quality products</p>
-    <p>FILTER-FORM</p>
-    <table class="table table-striped">
+    <div class="span5">
+        <form class="form-horizontal"> <!-- Filter form -->
+            <fieldset>
+                <div class="control-group">
+                    <label class="control-label" for="containsText">
+                        Containing text:</label>
+                    <div class="controls">
+                        <input id="containsText" type="text" class="span2" ng-model="criteria.containsText">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="maxPrice">
+                        Up to price:</label>
+                    <div class="controls">
+                        <input id="maxPrice" type="text" class="span2" ng-model="criteria.maxPrice">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn" ng-click="doFilter()">Filter</button>
+                    <button type="submit" class="btn" ng-click="showAll()">Show all</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <table class="table table-striped"> <!-- Product list table -->
         <caption>{{products.totalItemsCount}} products found</caption>
         <thead>
         <tr>
@@ -19,7 +43,11 @@
             <td>Add</td>
         </tr>
     </table>
-    <P>paginator</P>
-
-    <p><a class="btn" href="#">View details &raquo;</a></p>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li class="{{prevPageState()}}"><a ng-click="switchPage(criteria.pageNumber - 1)">Prev</a></li>
+            <li class="{{isCurrentPage(pageButton.index + 1)}}" ng-repeat="pageButton in pageButtons"><a ng-click="switchPage(pageButton.index + 1)">{{pageButton.index + 1}}</a></li>
+            <li class="{{nextPageState()}}"><a ng-click="switchPage(criteria.pageNumber + 1)">Next</a></li>
+        </ul>
+    </div>
 </div>
