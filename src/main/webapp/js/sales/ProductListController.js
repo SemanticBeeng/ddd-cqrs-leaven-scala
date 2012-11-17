@@ -1,4 +1,4 @@
-function ProductListController($scope, Products) {
+function ProductListController($scope, basket, Products) {
 
     $scope.fetchData = function () {
         $scope.products = Products.query($scope.criteria,
@@ -83,5 +83,9 @@ function ProductListController($scope, Products) {
         }
         $scope.fetchData();
     };
+
+    $scope.addToBasket = function(product) {
+        basket.add(product);
+    }
     $scope.showAll();
 }

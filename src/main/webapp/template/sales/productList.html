@@ -40,7 +40,7 @@
             <td><img src="./img/sales/noProductPicture.png" alt="X"/></td>
             <td>{{product.name}}</td>
             <td>{{product.price.doubleValue}}</td>
-            <td>Add</td>
+            <td><a ng-click="addToBasket(product)">Add</a></td>
         </tr>
     </table>
     <div class="pagination pagination-centered">

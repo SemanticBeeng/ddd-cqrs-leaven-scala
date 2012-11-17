@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="leaven">
+<html lang="en" ng-app="leavenApp">
 <head>
     <meta charset="utf-8">
     <title>DDD CQRS Sample</title>
@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
     <script src="lib/angular/angular.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/BasketController.js"></script>
+    <script src="js/BasketServices.js"></script>
     <script src="js/sales/ProductListController.js"></script>
     <script src="js/sales/ProductListServices.js"></script>
     <script src="lib/angular/angular-resource.js"></script>
@@ -43,12 +45,17 @@
         <h1>DDD CQRS Sample</h1>
     </div>
     <div class="row">
-        <div class="span9">
+        <div class="span8">
             <div ng-view></div>
         </div>
-        <div class="span3"><h3>Your basket</h3>
-            <li>Basket is empty</li>
+        <div class="span4" ng-controller="BasketController"> <!-- basket -->
 
+            <h3>Your basket:</h3>
+            <h5>{{basket.count()}} item(s)</h5>
+            <ul>
+            <li ng-repeat="entry in basket.getAll()">
+                {{entry.type.name}} x {{entry.quantity}}</li>
+            </ul>
 
         </div>
 

@@ -1,4 +1,4 @@
-angular.module('leaven', ['productListServices']).
+var leavenApp = angular.module('leavenApp', ['productListServices','basketServices']).
     config(['$routeProvider', function($routeProvider) {
 
         $routeProvider.
