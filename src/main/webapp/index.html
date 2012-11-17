@@ -56,7 +56,10 @@
             <li ng-repeat="entry in basket.getAll()">
                 {{entry.type.name}} x {{entry.quantity}}</li>
             </ul>
-
+            <div ng-hide="basket.isEmpty()">
+            <button class="btn btn-success" ng-click="checkout()">Checkout</button>
+            <button class="btn btn-inverse" ng-click="basket.clear()">Clear basket</button>
+            </div>
         </div>
 
     </div>

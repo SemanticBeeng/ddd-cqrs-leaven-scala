@@ -1,14 +1,16 @@
 angular.module('basketServices', []).
     factory('basket', function() {
 
-        var basket = {};
+        var basket = [];
         var count = 0;
 
         // Public API here
         return {
-            get: function() {
-                return basket;
+
+            isEmpty: function() {
+                return count==0;
             },
+
             count: function () {
                 return count;
             },
@@ -16,20 +18,36 @@ angular.module('basketServices', []).
                 return basket;
             },
             add: function (item) {
-                if (basket[item.id]) {
-                    basket[item.id].quantity += 1;
-                } else {
-                    basket[item.id] = {
+                var ind = this.indexOf(item);
+                console.log("KC2 " + ind);
+                if (ind != -1)
+                {
+                    basket[ind].quantity += 1;
+                }
+                else
+                {
+                    basket.push ({
                         type: item,
                         quantity: 1
-                    };
+                    });
                 }
-
                 count += 1;
             },
-            remove: function(item) {
-                count -= basket[item.type.id].quantity;
-                delete basket[item.type.id];
+            clear: function() {
+                count = 0;
+                basket = [];
+            },
+            indexOf: function(item) {
+
+                for (var i in basket)
+                {
+                    console.log(basket[i]);
+                    if (basket[i].type.id == item.id)
+                    {
+                        return i;
+                    }
+                }
+                return -1;
             }
         };
     });
