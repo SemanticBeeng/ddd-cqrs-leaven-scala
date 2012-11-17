@@ -64,6 +64,24 @@ function ProductListController($scope, Products) {
         }
     };
 
-
+    $scope.reOrderBy = function(orderBy) {
+        var currentOrder = $scope.criteria.orderBy;
+        if (currentOrder == orderBy || currentOrder == null)
+        {
+            if ($scope.criteria.ascending == 'false')
+            {
+                $scope.criteria.ascending = 'true'
+            }
+            else
+            {
+                $scope.criteria.ascending = 'false';
+            }
+        }
+        else
+        {
+            $scope.criteria.orderBy = orderBy;
+        }
+        $scope.fetchData();
+    };
     $scope.showAll();
 }
