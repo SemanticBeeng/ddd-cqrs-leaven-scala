@@ -19,7 +19,6 @@ angular.module('basketServices', []).
             },
             add: function (item) {
                 var ind = this.indexOf(item);
-                console.log("KC2 " + ind);
                 if (ind != -1)
                 {
                     basket[ind].quantity += 1;
@@ -41,7 +40,6 @@ angular.module('basketServices', []).
 
                 for (var i in basket)
                 {
-                    console.log(basket[i]);
                     if (basket[i].type.id == item.id)
                     {
                         return i;

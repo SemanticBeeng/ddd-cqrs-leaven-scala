@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
     <script src="lib/angular/angular.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/sales/OrderConfirmationController.js"></script>
     <script src="js/BasketController.js"></script>
     <script src="js/BasketServices.js"></script>
+    <script src="js/UtilServices.js"></script>
     <script src="js/sales/ProductListController.js"></script>
     <script src="js/sales/ProductListServices.js"></script>
     <script src="lib/angular/angular-resource.js"></script>
@@ -58,7 +60,7 @@
             </ul>
             <div ng-hide="basket.isEmpty()">
             <button class="btn btn-success" ng-click="checkout()">Checkout</button>
-            <button class="btn btn-inverse" ng-click="basket.clear()">Clear basket</button>
+            <button class="btn btn-inverse" ng-click="clearBasket()">Clear basket</button>
             </div>
         </div>
 
