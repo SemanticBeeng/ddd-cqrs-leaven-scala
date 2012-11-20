@@ -2,9 +2,13 @@ import org.scalatra._
 
 
 import javax.servlet.ServletContext
-import pl.com.bottega.cqrs.{ResourcesApp, LeavenSwagger}
+import pl.com.bottega.cqrs.{FakeBus, FakeBusContextConfiguration, ResourcesApp, LeavenSwagger}
+import pl.com.bottega.erp.ContextConfiguration
+import pl.com.bottega.erp.sales.application.commands.HelloCommand
 import pl.com.bottega.erp.sales.presentation.mongo.initMongoShowcaseContent
 import pl.com.bottega.erp.sales.presentation.ProductFinderFacade
+import pl.com.bottega.erp.sales.restfacade.OrderFacade
+import pl.com.bottega.erp.sales.application.commands.handlers.HelloCommandHandler
 
 /**
  * This is the Scalatra bootstrap file. You can use it to mount servlets or
@@ -18,13 +22,16 @@ class Scalatra extends LifeCycle {
   override def init(context: ServletContext) {
 
     // Intialize DI Config
-    implicit val config = ContextConfiguration
+    implicit val config = new ContextConfiguration with FakeBusContextConfiguration {
+      val commandSender = new FakeBus().registerHandler(classOf[HelloCommand], new HelloCommandHandler)
+    }
+
     initMongoShowcaseContent()
 
     // Mount one or more servlets
     context.mount(new ProductFinderFacade, "/products")
     context.mount(new ResourcesApp, "/api-docs")
-
+    context.mount(new OrderFacade, "/orders")
 
   }
 }
