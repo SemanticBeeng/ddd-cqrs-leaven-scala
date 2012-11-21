@@ -4,12 +4,12 @@ import org.scalatra._
 import javax.servlet.ServletContext
 import pl.com.bottega.cqrs.{FakeBus, FakeBusContextConfiguration, ResourcesApp, LeavenSwagger}
 import pl.com.bottega.erp.ContextConfiguration
-import pl.com.bottega.erp.sales.application.commands.HelloCommand
+import pl.com.bottega.erp.sales.application.commands.{CreateOrderCommand, HelloCommand}
 import pl.com.bottega.erp.sales.presentation.mongo.initMongoShowcaseContent
 import pl.com.bottega.erp.sales.presentation.ProductFinderFacade
 import pl.com.bottega.erp.sales.restfacade.OrderFacade
 import pl.com.bottega.erp.sales.application.commands.handlers.HelloCommandHandler
-
+import pl.com.bottega.erp.sales.application.commands.handlers.CreateOrderCommandHandler
 /**
  * This is the Scalatra bootstrap file. You can use it to mount servlets or
  * filters. It's also a good place to put initialization code which needs to
@@ -23,7 +23,8 @@ class Scalatra extends LifeCycle {
 
     // Intialize DI Config
     implicit val config = new ContextConfiguration with FakeBusContextConfiguration {
-      val commandSender = new FakeBus().registerHandler(classOf[HelloCommand], new HelloCommandHandler)
+      val commandSender = new FakeBus().registerHandler(classOf[HelloCommand], new HelloCommandHandler).
+        registerHandler(classOf[CreateOrderCommand], new CreateOrderCommandHandler)
     }
 
     initMongoShowcaseContent()

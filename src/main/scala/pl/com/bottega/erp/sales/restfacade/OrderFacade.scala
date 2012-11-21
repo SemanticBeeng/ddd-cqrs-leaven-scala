@@ -6,8 +6,9 @@ import org.scalatra.ScalatraServlet
 import org.scalatra.databinding.JacksonJsonParsing
 import org.scalatra.json.{JValueResult, JacksonJsonSupport}
 import org.json4s.{DefaultFormats, Formats}
-import pl.com.bottega.erp.sales.application.commands.HelloCommand
+import pl.com.bottega.erp.sales.application.commands.{CommandOrderItem, CreateOrderCommand, HelloCommand}
 import pl.com.bottega.cqrs.command.CommandSender
+import pl.com.bottega.ddd.domain.sharedkernel.Money
 
 class OrderFacade (implicit val swagger: Swagger, implicit val env: { val commandSender: CommandSender})
   extends ScalatraServlet with JacksonJsonParsing with JacksonJsonSupport with JValueResult with SwaggerSupport {
@@ -23,12 +24,7 @@ class OrderFacade (implicit val swagger: Swagger, implicit val env: { val comman
 
   post("/create")
   {
-    // TODO implementation
-  }
-
-  post("/hello")
-  {
-    val command = HelloCommand("command")
+    val command = parsedBody.extract[CreateOrderCommand]
     env.commandSender.send(command)
   }
 
