@@ -6,7 +6,6 @@ import pl.com.bottega.ddd.domain.sharedkernel.Money
 import java.math.RoundingMode
 
 
-
 object Money {
 
   val DEFAULT_CURRENCY_CODE: String = "EUR"
@@ -19,6 +18,7 @@ object Money {
     Money(value.doubleValue(), currency.getCurrencyCode)
   }
 }
+
 case class Money(doubleValue: Double, currencyCode: String = Currency.getInstance(Money.DEFAULT_CURRENCY_CODE).getCurrencyCode) {
 
   val value = round(BigDecimal(doubleValue))
@@ -57,10 +57,22 @@ case class Money(doubleValue: Double, currencyCode: String = Currency.getInstanc
     Money((value + money.value).doubleValue(), determineCurrencyCode(money))
   }
 
+  def >(other: Money): Boolean = {
+    value.compare(other.value) > 0
+  }
+
+  def <(other: Money): Boolean = {
+    value.compare(other.value) < 0
+  }
+
+  def <=(other: Money): Boolean = {
+    value.compare(other.value) <= 0
+  }
 
   private def round(decimal: BigDecimal): BigDecimal = decimal.setScale(2, BigDecimal.RoundingMode.HALF_EVEN)
 
   def *(multiplier: BigDecimal) = Money((value * multiplier).doubleValue(), currencyCode)
+
   def getCurrency: Currency = Currency.getInstance(currencyCode)
 
   override def toString = {
