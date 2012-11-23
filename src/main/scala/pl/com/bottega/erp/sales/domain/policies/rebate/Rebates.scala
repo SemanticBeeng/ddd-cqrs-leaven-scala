@@ -5,5 +5,9 @@ import pl.com.bottega.ddd.domain.sharedkernel.Money
 
 
 object Rebates {
-  type RebatePolicy = (Product, Int, Money) => Money
+  type Quantity = Int
+  type InitialCost = Money
+  type RebatedAmount = Money
+
+  type RebatePolicy = (Product, Quantity, InitialCost) => RebatedAmount
 }
