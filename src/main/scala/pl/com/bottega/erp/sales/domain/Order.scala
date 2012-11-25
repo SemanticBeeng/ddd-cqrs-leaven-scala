@@ -22,7 +22,7 @@ case class Order(override val id: Long, status: OrderStatus.Value,
 
   def addProduct(product: Product, quantity: Int)(implicit policy: RebatePolicy, client: Client, publishEvent: Events.EventPublisher): Order = {
     checkIfDraft(client)
-    val event = ProductAddedToOrder(product.id, product.name, product.productType, product.price, quantity)
+    val event = ProductAddedToOrder(product.id, id, product.productType, product.price, quantity)
     publishEvent(event)
     apply(event)
   }
@@ -73,8 +73,8 @@ case class OrderLine(override val id: Long, product: OrderProduct, quantity: Int
 object OrderProduct {
 
   def apply(event: ProductAddedToOrder): OrderProduct =
-    new OrderProduct(event.productid, event.productName, event.productType, event.price)
+    new OrderProduct(event.productid, event.productType, event.price)
 
 }
 
-case class OrderProduct(override val id: Long, name: String, productType: ProductType.Value, price: Money) extends DomainEntity(id)
+case class OrderProduct(override val id: Long, productType: ProductType.Value, price: Money) extends DomainEntity(id)

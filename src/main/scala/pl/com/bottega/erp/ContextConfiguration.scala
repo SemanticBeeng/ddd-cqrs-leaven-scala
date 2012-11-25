@@ -18,4 +18,5 @@ class ContextConfiguration {
       lazy val createOrder: Order.OrderFactory = pl.com.bottega.erp.sales.domain.createOrder(eventsPublisher)
       lazy val orderRepository = new MongoOrderRepository
       lazy val createOrderHandler = new CreateOrderCommandHandler(this)
+      lazy val createRebatePolicy = pl.com.bottega.erp.sales.domain.createRebatePolicy
 }
