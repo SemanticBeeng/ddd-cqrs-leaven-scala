@@ -34,10 +34,17 @@ object initMongoShowcaseContent extends (() => Unit) {
       )
   }
 
+  def addClient(db: MongoDB)
+  {
+    val collection = db(classOf[pl.com.bottega.erp.sales.domain.Client].getSimpleName)
+    val client = grater[Client].asDBObject(Client(1))
+    collection += client
+  }
+
   private def init(db: MongoDB, presentationDB: MongoDB) {
     val collection = db(classOf[pl.com.bottega.erp.sales.domain.Product].getSimpleName)
     val readCollection = presentationDB(classOf[ProductListItemDto].getSimpleName)
-
+    addClient(db)
     for (i <- 1 to 20) {
       val p1: (DBObject, DBObject) = product(i * 10 + 1, "Electronic Gizmo " + i, ProductType.Standard, Money(0.99))
       try

@@ -21,10 +21,12 @@ class Scalatra extends LifeCycle {
 
   override def init(context: ServletContext) {
 
+
     // Intialize DI Config
-    implicit val config = new ContextConfiguration with FakeBusContextConfiguration {
-      val commandSender = new FakeBus().registerHandler(classOf[HelloCommand], new HelloCommandHandler).
-        registerHandler(classOf[CreateOrderCommand], new CreateOrderCommandHandler)
+     lazy implicit val config = new ContextConfiguration with FakeBusContextConfiguration {
+
+     lazy val commandSender = new FakeBus().registerHandler(classOf[HelloCommand], new HelloCommandHandler).
+     registerHandler(classOf[CreateOrderCommand], createOrderHandler)
     }
 
     initMongoShowcaseContent()

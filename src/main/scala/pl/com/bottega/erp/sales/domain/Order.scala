@@ -7,16 +7,25 @@ import pl.com.bottega.ddd.EntityStatus._
 import pl.com.bottega.ddd.domain.sharedkernel.{newId, Money}
 import java.sql.Timestamp
 import policies.rebate.Rebates._
+import pl.com.bottega.cqrs.Events
 
 object Order {
+  type OrderFactory = ((Client, Long) => Order)
 
-  def apply(event: OrderCreated): Order = new Order(event.id, event.status, event.totalCost, event.items, None)
+  def apply(created: OrderCreated): Order = Order(created.id, OrderStatus.Draft, Money(0), List.empty, None)
 }
 
 case class Order(override val id: Long, status: OrderStatus.Value,
                  totalCost: Money, items: List[OrderLine], submitDate: Option[Timestamp]) extends DomainEntity(id: Long) {
 
   def apply(archived: OrderArchived): Order = new Order(id, OrderStatus.Archived, totalCost, items, submitDate)
+
+  def addProduct(product: Product, quantity: Int)(implicit policy: RebatePolicy, client: Client, publishEvent: Events.EventPublisher): Order = {
+    checkIfDraft(client)
+    val event = ProductAddedToOrder(product.id, product.name, product.productType, product.price, quantity)
+    publishEvent(event)
+    apply(event)
+  }
 
   def apply(productAdded: ProductAddedToOrder)(implicit client: Client, policy: RebatePolicy): Order = {
     checkIfDraft(client)
@@ -30,8 +39,6 @@ case class Order(override val id: Long, status: OrderStatus.Value,
     }
     Order(id, status, totalCost, newItems, submitDate).recalculate(policy)
   }
-
-  // keeping consistency of inner entities
   private def recalculate(policy: RebatePolicy): Order = {
     val itemsWithRebate = items.map(_.applyPolicy(policy))
     val newTotalCost = items.foldLeft(Money(0))((accumulator, item) => accumulator + item.effectiveCost)
@@ -45,7 +52,7 @@ case class Order(override val id: Long, status: OrderStatus.Value,
 
 object OrderLine {
   def apply(id: Long, product: OrderProduct, quantity: Int, rebatePolicy: RebatePolicy): OrderLine = {
-    null
+    OrderLine(id, product, quantity, Money(0), Money(0)).applyPolicy(rebatePolicy)
   }
 }
 
@@ -59,9 +66,8 @@ case class OrderLine(override val id: Long, product: OrderProduct, quantity: Int
     OrderLine(id, product, quantity, regularCost, newEffectiveCost)
   }
 
-  def increaseQuantity(quantity: Int, policy: RebatePolicy): OrderLine = {
-    this // TODO
-  }
+  def increaseQuantity(addedQuantity: Int, policy: RebatePolicy): OrderLine =
+    OrderLine(id, product, quantity + addedQuantity, regularCost, effectiveCost).applyPolicy(policy)
 }
 
 object OrderProduct {

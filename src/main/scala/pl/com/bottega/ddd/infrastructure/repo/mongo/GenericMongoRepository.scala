@@ -18,6 +18,10 @@ class GenericMongoRepository[E <: DomainEntity, K](mongoBase: String = MongoCons
     val query = MongoDBObject("id" -> id)
     val dbo = mongoCollection.findOne(query)
     dbo.map(graterInstance.asObject(_))
+  }
 
+  def save(entity: E)
+  {
+    // TODO
   }
 }

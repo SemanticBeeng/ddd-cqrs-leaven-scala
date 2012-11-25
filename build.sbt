@@ -12,6 +12,7 @@ classpathTypes ~= (_ + "orbit")
 
 libraryDependencies ++= Seq(
   "org.scalatra" % "scalatra-json" % "2.2.0-RC1",
+    "tv.cntt" %% "sclasner" % "1.1",
   "org.scalatra" % "scalatra-data-binding" % "2.2.0-RC1",
   "org.json4s" % "json4s-jackson_2.9.1-1" % "3.0.0",
   "com.wordnik" % "swagger-core_2.9.1" % "1.1.0",
