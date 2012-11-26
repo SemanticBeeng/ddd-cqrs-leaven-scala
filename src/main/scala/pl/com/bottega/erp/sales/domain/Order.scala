@@ -4,7 +4,7 @@ import errors.OrderOperationException
 import events.{ProductAddedToOrder, OrderArchived, OrderCreated}
 import pl.com.bottega.ddd.{EntityStatus, DomainEntity}
 import pl.com.bottega.ddd.EntityStatus._
-import pl.com.bottega.ddd.domain.sharedkernel.{newId, Money}
+import pl.com.bottega.ddd.domain.sharedkernel.{Money}
 import java.sql.Timestamp
 import policies.rebate.Rebates._
 import pl.com.bottega.cqrs.Events
@@ -35,7 +35,7 @@ case class Order(override val id: Long, status: OrderStatus.Value,
         val index = items.indexOf(orderLine)
         items.updated(index, orderLine.increaseQuantity(productAdded.quantity, policy))
       }
-      case None => OrderLine(newId(), OrderProduct(productAdded), productAdded.quantity, policy) :: items
+      case None => OrderLine(OrderProduct(productAdded), productAdded.quantity, policy) :: items
     }
     Order(id, status, totalCost, newItems, submitDate).recalculate(policy)
   }
@@ -51,8 +51,8 @@ case class Order(override val id: Long, status: OrderStatus.Value,
 }
 
 object OrderLine {
-  def apply(id: Long, product: OrderProduct, quantity: Int, rebatePolicy: RebatePolicy): OrderLine = {
-    OrderLine(id, product, quantity, Money(0), Money(0)).applyPolicy(rebatePolicy)
+  def apply(product: OrderProduct, quantity: Int, rebatePolicy: RebatePolicy): OrderLine = {
+    OrderLine(product.id, product, quantity, Money(0), Money(0)).applyPolicy(rebatePolicy)
   }
 }
 

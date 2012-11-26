@@ -2,6 +2,8 @@ organization := "pl.com.bottega"
 
 name := "cqrs-web-scala"
 
+resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
+
 version := "0.1.0-SNAPSHOT"
 
 scalaVersion := "2.9.2"
@@ -12,7 +14,7 @@ classpathTypes ~= (_ + "orbit")
 
 libraryDependencies ++= Seq(
   "org.scalatra" % "scalatra-json" % "2.2.0-RC1",
-    "tv.cntt" %% "sclasner" % "1.1",
+  "com.typesafe.akka" % "akka-actor" % "2.0.4",
   "org.scalatra" % "scalatra-data-binding" % "2.2.0-RC1",
   "org.json4s" % "json4s-jackson_2.9.1-1" % "3.0.0",
   "com.wordnik" % "swagger-core_2.9.1" % "1.1.0",

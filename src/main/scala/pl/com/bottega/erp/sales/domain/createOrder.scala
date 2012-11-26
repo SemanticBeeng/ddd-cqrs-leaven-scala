@@ -18,7 +18,7 @@ object createOrder extends (Events.EventPublisher => OrderFactory) {
   override def apply(publishEvent: Events.EventPublisher) = {
     (client, id) => {
       checkIfClientCanPerformPurchase(client)
-      val created = OrderCreated(id)
+      val created = OrderCreated(id, client.id)
       publishEvent(created)
       Order.apply(created)
     }
