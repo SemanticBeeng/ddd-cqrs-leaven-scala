@@ -1,13 +1,13 @@
 package pl.com.bottega.erp.sales.domain
 
 import errors.OrderOperationException
-import events.{ProductAddedToOrder, OrderArchived, OrderCreated}
 import pl.com.bottega.ddd.{EntityStatus, DomainEntity}
 import pl.com.bottega.ddd.EntityStatus._
 import pl.com.bottega.ddd.domain.sharedkernel.{Money}
 import java.sql.Timestamp
 import policies.rebate.Rebates._
 import pl.com.bottega.cqrs.Events
+import pl.com.bottega.erp.sales.api.events.{ProductAddedToOrder, OrderCreated, OrderArchived}
 
 object Order {
   type OrderFactory = ((Client, Long) => Order)

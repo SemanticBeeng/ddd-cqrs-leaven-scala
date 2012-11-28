@@ -1,10 +1,10 @@
 package pl.com.bottega.erp.sales.domain
 
-import events.OrderCreated
 import pl.com.bottega.erp.sales.domain.errors.OrderCreationException
 import pl.com.bottega.ddd.EntityStatus
 import pl.com.bottega.cqrs.Events
 import pl.com.bottega.erp.sales.domain.Order._
+import pl.com.bottega.erp.sales.api.events.OrderCreated
 
 object createOrder extends (Events.EventPublisher => OrderFactory) {
 

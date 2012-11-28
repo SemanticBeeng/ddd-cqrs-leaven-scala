@@ -1,6 +1,5 @@
 package pl.com.bottega.erp.sales.domain
 
-import events.{OrderArchived, OrderCreated}
 import org.specs2.mutable.Specification
 import pl.com.bottega.ddd.domain.sharedkernel.Money
 import pl.com.bottega.ddd.EntityStatus
